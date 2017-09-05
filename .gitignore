@@ -5,3 +5,9 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 
+/src/Evento.Core/bin
+/src/Evento.Core/obj
+/src/Evento.Infrastructure/bin
+/src/Evento.Infrastructure/obj
+/src/Evento.Api/bin
+/src/Evento.Api/obj

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Evento.Core.Domain;
 using Evento.Core.Repositories;
 using Evento.Infrastructure.DTO;
 
@@ -30,7 +31,7 @@ namespace Evento.Infrastructure.Services
         {
             var @event = await _eventRepository.GetAsync(name);
 
-            return _mapper.Map<EventDto>(@event);       
+            return _mapper.Map<EventDto>(@event);
         }
 
         public async Task<IEnumerable<EventDto>> BrowseAsyns(string name = null)
@@ -39,11 +40,17 @@ namespace Evento.Infrastructure.Services
 
             return _mapper.Map<IEnumerable<EventDto>>(events);
 
-      }
+        }
 
         public async Task CreateAsync(Guid id, string name, string description, DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            var @event = await _eventRepository.GetAsync(name);
+            if (@event != null)
+            {
+                throw new Exception($"Event named: '{name}' alreaty exsts");
+            }
+            @event = new Event(id, name, description, startDate, endDate);
+            await _eventRepository.AddAsync(@event);
         }
 
         public async Task AddTicketAsync(Guid eventId, int amount, decimal price)

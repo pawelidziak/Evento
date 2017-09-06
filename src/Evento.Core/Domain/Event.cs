@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Evento.Core.Domain
 {
@@ -17,6 +18,9 @@ namespace Evento.Core.Domain
         // kolekcja biletów do wydarzenia, tylko do odczytu (dlatego IEnumerable a nie List), a dodawanie odbywa się poprzez odpowiednie metody w klasie Event
         // operujemy na prywanym _tickets, a konsumentowi zwracamy ISet widoczny jako IEnumerable
         public IEnumerable<Ticket> Tickets => _tickets;
+        public IEnumerable<Ticket> PurchasedTickets => Tickets.Where(x => x.Purchased == true);
+        public IEnumerable<Ticket> AvailableTickets => Tickets.Except(PurchasedTickets);
+
 
         protected Event() { }
 

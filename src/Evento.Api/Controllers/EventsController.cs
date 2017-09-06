@@ -25,6 +25,18 @@ namespace Evento.Api.Controllers
             return Json(events);
         }
 
+        // pobierz szczegóły wydarzenia 
+        [HttpGet("{eventId}")]
+        public async Task<IActionResult> Get(Guid eventId)
+        {
+            var @event = await _eventService.GetAsync(eventId);
+            if(@event == null)
+            {
+                return NotFound(); //404
+            }
+            return Json(@event);
+        }
+
         // utwórz wydarzenie
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CreateEvent command)
@@ -43,5 +55,14 @@ namespace Evento.Api.Controllers
             command.EventId = Guid.NewGuid();
             await _eventService.UpdateAsync(eventId, command.Name, command.Description);
             return NoContent(); //204
+        }
+
+        // usun wydarzenie /events/{id}
+        [HttpDelete("{eventId}")]
+        public async Task<IActionResult> Delete(Guid eventId)
+        {
+            await _eventService.DeleteAsync(eventId);
+            return NoContent(); //204
+        }
     }
 }

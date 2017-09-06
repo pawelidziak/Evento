@@ -27,8 +27,8 @@ namespace Evento.Infrastructure.Services
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, userId.ToString()),
                 new Claim(ClaimTypes.Role, role),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),      // identyfikator tokena
-                new Claim(JwtRegisteredClaimNames.Iat, now.ToTimestamp().ToString()),   // moment stworzenia tokenu
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),      //id tokenu
+                new Claim(JwtRegisteredClaimNames.Iat, now.ToTimestamp().ToString()),   //moment stworzenia tokenu
             };
 
             var expires = now.AddMinutes(_jwtSettings.ExpiryMinutes);
@@ -41,7 +41,6 @@ namespace Evento.Infrastructure.Services
                 expires: expires,
                 signingCredentials: signingCredentials
             );
-
             var token = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             return new JwtDto

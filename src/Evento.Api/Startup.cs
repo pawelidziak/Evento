@@ -37,50 +37,39 @@ namespace Evento.Api
                 .AddJsonOptions(x=> x.SerializerSettings.Formatting = Formatting.Indented);
 
             // dodane
+            services.AddAuthorization();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<IJwtHandler, JwtHandler>();
 
             services.AddSingleton(AutoMapperConfig.Initialize());
 
-            // services.Configure<JwtSettings>(Configuration.GetSection("jwt"));
 
-            // services.AddAuthentication(options =>
-            // {
-            //     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            // })
-
-            // .AddJwtBearer(options =>
-            // {
-            //     options.Authority = "http://localhost:30940/";
-            //     options.Audience = "resource-server";
-            //     options.RequireHttpsMetadata = false;
-            // });
-            var jwtSettings = Configuration.GetSection("jwt").Get<JwtSettings>();
+            services.Configure<JwtSettings>(Configuration.GetSection("jwt"));
+            var config = Configuration.GetSection("jwt").Get<JwtSettings>();
 
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+
+            .AddJwtBearer(options =>
             {
-                o.TokenValidationParameters = new TokenValidationParameters()
+                // options.Authority = "http://localhost:5000/";
+                // options.Audience = "resource-server";
+                options.RequireHttpsMetadata = false;
+                // options.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jwtSettings.Value.Ke"));
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration[jwtSettings.Key])),
-
+                    ValidIssuer = config.Issuer,
                     ValidateAudience = false,
-                    // ValidAudience = Configuration["JWT:ValidIssuer"],
-
-                    ValidateIssuer = true,
-                    ValidIssuer = Configuration[jwtSettings.Issuer],
-
-                    // ValidateLifetime = true,
-                    // ClockSkew = TimeSpan.Zero
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.Key))
+                    
                 };
             });
+          
 
         }
 

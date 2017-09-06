@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Evento.Infrastructure.Commands.Users;
 using Evento.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,13 +28,15 @@ namespace Evento.Api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> Post(Register command)
         {
-            throw new NotImplementedException();
+            await _userService.RegisterAsync(Guid.NewGuid(), command.Email, command.Name, command.Password, command.Role);
+
+            return Created("/account", null);
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> Post(Login command)
         {
             throw new NotImplementedException();
         }

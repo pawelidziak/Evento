@@ -68,7 +68,7 @@ namespace Evento.Core.Domain
             }
         }
 
-        public void PurchaseTickes(User user, int amount)
+        public void PurchaseTickets(User user, int amount)
         {
             if(AvailableTickets.Count() < amount)
             {
@@ -81,7 +81,7 @@ namespace Evento.Core.Domain
                 ticket.Purchase(user);
             }
         }
-        public void CancelPurchasedTickes(User user, int amount)
+        public void CancelPurchasedTickets(User user, int amount)
         {
             var tickets = PurchasedTickets.Where(x => x.UserId == user.Id);
 

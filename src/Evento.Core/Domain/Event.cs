@@ -76,7 +76,7 @@ namespace Evento.Core.Domain
             }
 
             var tickets = AvailableTickets.Take(amount);
-            foreach(var ticket in Tickets)
+            foreach(var ticket in tickets)
             {
                 ticket.Purchase(user);
             }
@@ -89,7 +89,7 @@ namespace Evento.Core.Domain
             {
                 throw new Exception($"Not enough purchased tickets to be canceled: ({amount}) by user '{user.Name}'.");
             }
-            foreach(var ticket in Tickets)
+            foreach(var ticket in Tickets.Take(amount))
             {
                 ticket.Cancel();
             }

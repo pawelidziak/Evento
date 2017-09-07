@@ -15,7 +15,7 @@ namespace Evento.Infrastructure.Services
         private IEventRepository _eventRepository;
         private IMapper _mapper;
 
-        public TicketService(IUserRepository userRepository, 
+        public TicketService(IUserRepository userRepository,
             IEventRepository eventRepository, IMapper mapper)
         {
             _userRepository = userRepository;
@@ -23,14 +23,25 @@ namespace Evento.Infrastructure.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<TicketDto>> GetForUserAsync(Guid userId)
+        public async Task<IEnumerable<TicketDetailsDto>> GetForUserAsync(Guid userId)
         {
             var user = await _userRepository.GetOrFailAsync(userId);
             var events = await _eventRepository.BrowseAsync();
 
-            var tickets = events.SelectMany(x => x.GetTicketsPurchasedByUser(user));
+            var allTickets = new List<TicketDetailsDto>();
 
-            return _mapper.Map<IEnumerable<TicketDto>>(tickets);
+            foreach (var @event in events)
+            {
+                var tickets = _mapper.Map<IEnumerable<TicketDetailsDto>>(@event.GetTicketsPurchasedByUser(user)).ToList();
+                tickets.ForEach(x =>
+                {
+                    x.EventId = @event.Id;
+                    x.EventName = @event.Name;
+                });
+                allTickets.AddRange(tickets);
+            }
+
+            return allTickets;
         }
 
         public async Task<TicketDto> GetAsync(Guid userId, Guid eventId, Guid ticketId)

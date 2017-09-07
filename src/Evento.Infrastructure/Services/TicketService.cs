@@ -23,6 +23,16 @@ namespace Evento.Infrastructure.Services
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<TicketDto>> GetForUserAsync(Guid userId)
+        {
+            var user = await _userRepository.GetOrFailAsync(userId);
+            var events = await _eventRepository.BrowseAsync();
+
+            var tickets = events.SelectMany(x => x.GetTicketsPurchasedByUser(user));
+
+            return _mapper.Map<IEnumerable<TicketDto>>(tickets);
+        }
+
         public async Task<TicketDto> GetAsync(Guid userId, Guid eventId, Guid ticketId)
         {
             var user = await _userRepository.GetOrFailAsync(userId);
@@ -46,5 +56,6 @@ namespace Evento.Infrastructure.Services
             @event.CancelPurchasedTickets(user, amount);
             await _eventRepository.UpdateAsync(@event);
         }
+
     }
 }

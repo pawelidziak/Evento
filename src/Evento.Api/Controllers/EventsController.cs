@@ -26,6 +26,9 @@ namespace Evento.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(string name)
         {
+
+            // throw new ArgumentException("dsadas"); its test for middleware error hendler 
+
             var events = _cache.Get<IEnumerable<EventDto>>("events");
             if (events == null)
             {

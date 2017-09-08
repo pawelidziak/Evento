@@ -34,16 +34,17 @@ namespace Evento.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
-                .AddJsonOptions(x=> x.SerializerSettings.Formatting = Formatting.Indented);
+                .AddJsonOptions(x => x.SerializerSettings.Formatting = Formatting.Indented);
 
             services.AddMemoryCache();
-            
+
             // dodane
             services.AddAuthorization();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IDataInitializer, DataInitializer>();
             services.AddScoped<ITicketService, TicketService>();
             services.AddSingleton<IJwtHandler, JwtHandler>();
 
@@ -51,6 +52,8 @@ namespace Evento.Api
 
 
             services.Configure<JwtSettings>(Configuration.GetSection("jwt"));
+            services.Configure<AppSettings>(Configuration.GetSection("app"));
+
             var config = Configuration.GetSection("jwt").Get<JwtSettings>();
 
             services.AddAuthentication(options =>
@@ -69,16 +72,18 @@ namespace Evento.Api
                     ValidIssuer = config.Issuer,
                     ValidateAudience = false,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.Key))
-                    
+
                 };
             });
-          
+
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            
+            SeedData(app);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -98,8 +103,17 @@ namespace Evento.Api
             //     }
             // });
 
-
             app.UseMvc();
+        }
+
+        private void SeedData(IApplicationBuilder app)
+        {
+            var settings = app.ApplicationServices.GetService<IOptions<AppSettings>>();
+            if (settings.Value.SeedData)
+            {
+                var dataInitializer = app.ApplicationServices.GetService<IDataInitializer>();
+                dataInitializer.SeedAsync();
+            }
         }
     }
 }

@@ -54,7 +54,7 @@ namespace Evento.Infrastructure.Services
             await _eventRepository.AddAsync(@event);
         }
 
-        public async Task AddTicketAsync(Guid eventId, int amount, decimal price)
+        public async Task AddTicketsAsync(Guid eventId, int amount, decimal price)
         {
             var @event = await _eventRepository.GetOrFailAsync(eventId);
 

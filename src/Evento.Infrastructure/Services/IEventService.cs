@@ -12,7 +12,7 @@ namespace Evento.Infrastructure.Services
         Task<EventDetailDto> GetAsync(string name);
         Task<IEnumerable<EventDto>> BrowseAsyns(string name = null);
         Task CreateAsync(Guid id, string name, string description, DateTime startDate, DateTime endDate);
-        Task AddTicketAsync(Guid eventId, int amount, decimal price);
+        Task AddTicketsAsync(Guid eventId, int amount, decimal price);
         Task UpdateAsync(Guid id, string name, string description);
         Task DeleteAsync(Guid id);
         

@@ -36,6 +36,8 @@ namespace Evento.Api
             services.AddMvc()
                 .AddJsonOptions(x=> x.SerializerSettings.Formatting = Formatting.Indented);
 
+            services.AddMemoryCache();
+            
             // dodane
             services.AddAuthorization();
             services.AddScoped<IEventRepository, EventRepository>();

@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Evento.Infrastructure.Commands.Events;
+using Evento.Infrastructure.DTO;
 using Evento.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Evento.Api.Controllers
 {
@@ -11,17 +14,29 @@ namespace Evento.Api.Controllers
     {
 
         private readonly IEventService _eventService;
+        private readonly IMemoryCache _cache;
 
-        public EventsController(IEventService eventService)
+        public EventsController(IEventService eventService, IMemoryCache cache)
         {
             _eventService = eventService;
+            _cache = cache;
         }
 
         // pobierz wszystkie wydarzenia 
         [HttpGet]
         public async Task<IActionResult> Get(string name)
         {
-            var events = await _eventService.BrowseAsyns(name);
+            var events = _cache.Get<IEnumerable<EventDto>>("events");
+            if (events == null)
+            {
+                Console.WriteLine("Fetching from service.");
+                events = await _eventService.BrowseAsyns(name);
+                _cache.Set("events", events, TimeSpan.FromMinutes(1));
+                // "events" lepiej by było dać do zmiennej, TimeSpan to ile czasu dane maja w cachu lezec
+            }
+            else{
+                Console.WriteLine("Fetching from cache.");
+            }
             return Json(events);
         }
 
@@ -30,7 +45,7 @@ namespace Evento.Api.Controllers
         public async Task<IActionResult> Get(Guid eventId)
         {
             var @event = await _eventService.GetAsync(eventId);
-            if(@event == null)
+            if (@event == null)
             {
                 return NotFound(); //404
             }

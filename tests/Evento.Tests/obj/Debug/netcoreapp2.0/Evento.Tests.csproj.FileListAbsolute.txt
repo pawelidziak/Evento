@@ -1,0 +1,17 @@
+D:\Workspace\Evento\tests\Evento.Tests\bin\Debug\netcoreapp2.0\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+D:\Workspace\Evento\tests\Evento.Tests\bin\Debug\netcoreapp2.0\xunit.runner.utility.netstandard15.dll
+D:\Workspace\Evento\tests\Evento.Tests\bin\Debug\netcoreapp2.0\xunit.runner.reporters.netstandard15.dll
+D:\Workspace\Evento\tests\Evento.Tests\bin\Debug\netcoreapp2.0\Evento.Tests.deps.json
+D:\Workspace\Evento\tests\Evento.Tests\bin\Debug\netcoreapp2.0\Evento.Tests.runtimeconfig.json
+D:\Workspace\Evento\tests\Evento.Tests\bin\Debug\netcoreapp2.0\Evento.Tests.runtimeconfig.dev.json
+D:\Workspace\Evento\tests\Evento.Tests\bin\Debug\netcoreapp2.0\Evento.Tests.dll
+D:\Workspace\Evento\tests\Evento.Tests\bin\Debug\netcoreapp2.0\Evento.Tests.pdb
+D:\Workspace\Evento\tests\Evento.Tests\obj\Debug\netcoreapp2.0\Evento.Tests.csproj.CoreCompileInputs.cache
+D:\Workspace\Evento\tests\Evento.Tests\obj\Debug\netcoreapp2.0\Evento.Tests.AssemblyInfoInputs.cache
+D:\Workspace\Evento\tests\Evento.Tests\obj\Debug\netcoreapp2.0\Evento.Tests.AssemblyInfo.cs
+D:\Workspace\Evento\tests\Evento.Tests\obj\Debug\netcoreapp2.0\Evento.Tests.dll
+D:\Workspace\Evento\tests\Evento.Tests\obj\Debug\netcoreapp2.0\Evento.Tests.pdb
+D:\Workspace\Evento\tests\Evento.Tests\bin\Debug\netcoreapp2.0\Evento.Core.dll
+D:\Workspace\Evento\tests\Evento.Tests\bin\Debug\netcoreapp2.0\Evento.Infrastructure.dll
+D:\Workspace\Evento\tests\Evento.Tests\bin\Debug\netcoreapp2.0\Evento.Core.pdb
+D:\Workspace\Evento\tests\Evento.Tests\bin\Debug\netcoreapp2.0\Evento.Infrastructure.pdb

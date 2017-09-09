@@ -70,9 +70,9 @@ namespace Evento.Api
                 // options.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jwtSettings.Value.Ke"));
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidIssuer = config.Issuer,
+                    ValidIssuer = "http://localhost:5000", // better: config.Issuer
                     ValidateAudience = false,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.Key))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super_secret_123!")) // better: config.Key
 
                 };
             });
